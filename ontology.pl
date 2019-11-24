@@ -84,8 +84,8 @@ family_car(Car) :- instance_of(Car, nissan), !.
 % 2-местный автомобиль
 % принцип наследования - от родителя
 two_seats(r8).
+two_seats(mini_roadster).
 two_seats(i8).
-two_seats().
 two_seats(lamborghini).
 two_seats(smart).
 two_seats(Car) :- instance_of(Car, Class), two_seats(Class).
@@ -95,19 +95,31 @@ two_seats(Car) :- instance_of(Car, Class), two_seats(Class).
 four_seats(continental).
 four_seats(911).
 four_seats(panamera).
+four_seats(paceman).
 four_seats(maybach).
 four_seats(rolls-royce).
+four_seats(Car) :- instance_of(Car, Class), four_seats(Class).
+
 
 % 5-местный автомобиль
 % принцип наследования - от родителя
 five_seats(a8).
-five_seats(a8).
-five_seats(a8).
-five_seats(a8).
-five_seats(a8).
-five_seats(a8).
-five_seats(a8).
-five_seats(a8).
+five_seats(q5).
+five_seats(bentayga).
+five_seats(cayenne).
+five_seats(clubman).
+five_seats(x5).
+five_seats(skoda).
+five_seats(mercedes-benz).
+five_seats(renault).
+five_seats(lada).
+five_seats(nissan).
+five_seats(lada).
+five_seats(mitsubishi).
+five_seats(Car) :- instance_of(Car, Class), five_seats(Class).
+
+
+
 
 
 
