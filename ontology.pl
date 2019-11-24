@@ -60,3 +60,62 @@ sports_car(i8).
 sports_car(Car) :- instance_of(Car, lamborghini), !.
 sports_car(Car) :- instance_of(Car, porshe), !.
 
+% считать ли авто "класса люкс"
+% принцип наследования - значение по умолчанию
+executive_class(a8).
+executive_class(panamera).
+executive_class(cla).
+executive_class(i8).
+executive_class(Car) :- instance_of(Car, bentley), !.
+executive_class(Car) :- instance_of(Car, maybach), !.
+executive_class(Car) :- instance_of(Car, rolls-royce), !.
+
+% считать ли машину семейной
+% принцип наследования - значение по умолчанию
+family_car(q5).
+family_car(xray).
+family_car(outlander).
+family_car(pajero).
+family_car(clubman).
+family_car(x5).
+family_car(Car) :- instance_of(Car, skoda), !.
+family_car(Car) :- instance_of(Car, nissan), !.
+
+% 2-местный автомобиль
+% принцип наследования - от родителя
+two_seats(r8).
+two_seats(i8).
+two_seats().
+two_seats(lamborghini).
+two_seats(smart).
+two_seats(Car) :- instance_of(Car, Class), two_seats(Class).
+
+% 4-местный автомобиль
+% принцип наследования - от родителя
+four_seats(continental).
+four_seats(911).
+four_seats(panamera).
+four_seats(maybach).
+four_seats(rolls-royce).
+
+% 5-местный автомобиль
+% принцип наследования - от родителя
+five_seats(a8).
+five_seats(a8).
+five_seats(a8).
+five_seats(a8).
+five_seats(a8).
+five_seats(a8).
+five_seats(a8).
+five_seats(a8).
+
+
+
+
+
+
+
+
+
+
+
