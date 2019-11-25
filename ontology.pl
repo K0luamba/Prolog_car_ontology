@@ -118,6 +118,44 @@ five_seats(lada).
 five_seats(mitsubishi).
 five_seats(Car) :- instance_of(Car, Class), five_seats(Class).
 
+% тип кузова машины
+% принцип наследования - от родителя
+body_type(r8, coupe).
+body_type(a8, sedan).
+body_type(q5, crossover).
+body_type(continental, coupe).
+body_type(bentayga, crossover).
+body_type(911, coupe).
+body_type(cayenne, crossover).
+body_type(panamera, hatchback).
+body_type(fabia, station_wagon).
+body_type(yeti, crossover).
+body_type(maybach_57, sedan).
+body_type(maybach_62, limousine).
+body_type(gelenvagen, suv).
+body_type(cla, sedan).
+body_type(fortwo, coupe).
+body_type(smart_roadster, roadster).
+body_type(xray, crossover).
+body_type(vesta, sedan).
+body_type(x-trail, crossover).
+body_type(kicks, crossover).
+body_type(pathfinder, suv).
+body_type(outlander, crossover).
+body_type(lancer, sedan).
+body_type(pajero, suv).
+body_type(clubman, station_wagon).
+body_type(mini_roadster, roadster).
+body_type(paceman, coupe).
+body_type(i8, coupe).
+body_type(x5, suv).
+body_type(ghost, sedan).
+body_type(wraith, coupe).
+body_type(lamborghini, coupe).
+body_type(renault, sedan).
+body_type(Car, Type) :- instance_of(Car, Class), body_type(Class, Type).
+
+
 
 
 
