@@ -155,6 +155,25 @@ body_type(lamborghini, coupe).
 body_type(renault, sedan).
 body_type(Car, Type) :- instance_of(Car, Class), body_type(Class, Type).
 
+% число дверей в авто
+% принцип наследования - от родителя
+number_of_doors(r8, 2).
+number_of_doors(a8, 4).
+number_of_doors(q5, 5).
+number_of_doors(continental, 2).
+number_of_doors(bentayga, 5).
+number_of_doors(911, 2).
+number_of_doors(cayenne, 5).
+number_of_doors(panamera, 5).
+number_of_doors(, ).
+number_of_doors(, ).
+number_of_doors(, ).
+number_of_doors(, ).
+number_of_doors(lamborghini, 2).
+number_of_doors(skoda, 5).
+number_of_doors(maybach, 4).
+
+
 
 
 
