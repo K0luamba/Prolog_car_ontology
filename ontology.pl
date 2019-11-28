@@ -172,11 +172,21 @@ number_of_doors(Car, 5) :- body_type(Car, station_wagon), !.
 % мощность автомобиля (л.с.)
 % нет наследования
 engine_power(r8, 540).
-
-
-
-
-
+engine_power(a8, 340).
+engine_power(q5, 249).
+engine_power(continental, 507).
+engine_power(bentayga, 550).
+engine_power(huracan, 610).
+engine_power(aventador, 700).
+engine_power(911, 540).
+engine_power(cayenne, 340).
+engine_power(panamera, 330).
+engine_power(fabia, 105).
+engine_power(yeti, 110).
+engine_power(maybach_57, 550).
+engine_power(maybach_62, 550).
+engine_power(gelenvagen, 422).
+engine_power(cla, 150).
 
 
 
