@@ -51,6 +51,9 @@ instance_of(i8, bmw).
 instance_of(x5, bmw).
 instance_of(ghost, rolls-royce).
 instance_of(wraith, rolls-royce).
+% если считаем, что экземпляр можно называть
+% представителем класса самого верхнего уровня
+instance_of(Car, BigClass) :- instance_of(Car, Class), sub_class(Class, BigClass).
 
 % считать ли авто "спорткаром"
 % принцип наследования - значение по умолчанию
@@ -156,22 +159,19 @@ body_type(renault, sedan).
 body_type(Car, Type) :- instance_of(Car, Class), body_type(Class, Type).
 
 % число дверей в авто
-% принцип наследования - от родителя
-number_of_doors(r8, 2).
-number_of_doors(a8, 4).
-number_of_doors(q5, 5).
-number_of_doors(continental, 2).
-number_of_doors(bentayga, 5).
-number_of_doors(911, 2).
-number_of_doors(cayenne, 5).
-number_of_doors(panamera, 5).
-number_of_doors(, ).
-number_of_doors(, ).
-number_of_doors(, ).
-number_of_doors(, ).
-number_of_doors(lamborghini, 2).
-number_of_doors(skoda, 5).
-number_of_doors(maybach, 4).
+% вычисляется в хависимости от типа кузова (нет наследования)
+number_of_doors(Car, 2) :- body_type(Car, coupe), !.
+number_of_doors(Car, 2) :- body_type(Car, roadster), !.
+number_of_doors(Car, 4) :- body_type(Car, sedan), !.
+number_of_doors(Car, 4) :- body_type(Car, limousine), !. % возможны варианты, исключения писать отдельно
+number_of_doors(Car, 5) :- body_type(Car, suv), !.
+number_of_doors(Car, 5) :- body_type(Car, crossover), !.
+number_of_doors(Car, 5) :- body_type(Car, hatchback), !.
+number_of_doors(Car, 5) :- body_type(Car, station_wagon), !.
+
+% мощность автомобиля (л.с.)
+% нет наследования
+engine_power(r8, 540).
 
 
 
