@@ -187,7 +187,43 @@ engine_power(maybach_57, 550).
 engine_power(maybach_62, 550).
 engine_power(gelenvagen, 422).
 engine_power(cla, 150).
+engine_power(fortwo, 71).
+engine_power(smart_roadster, 82).
+engine_power(logan, 113).
+engine_power(fluence, 139).
+engine_power(xray, 106).
+engine_power(vesta, 106).
+engine_power(x-trail, 144).
+engine_power(kicks, 114).
+engine_power(pathfinder, 230).
+engine_power(outlander, 146).
+engine_power(lancer, 150).
+engine_power(pajero, 178).
+engine_power(clubman, 122).
+engine_power(mini_roadster, 122).
+engine_power(paceman, 122).
+engine_power(i8, 231).
+engine_power(x5, 381).
+engine_power(ghost, 563).
+engine_power(wraith, 624).
 
+% страна производства
+% наследование - от родителя (явно не указан ни для одной модели)
+country_of_origin(audi, germany) :- !.
+country_of_origin(bentley, great_britain) :- !.
+country_of_origin(lamborghini, italia) :- !.
+country_of_origin(porshe, germany) :- !.
+country_of_origin(skoda, czech_republic) :- !.
+country_of_origin(renault, france) :- !.
+country_of_origin(lada, russia) :- !.
+country_of_origin(nissan, japan) :- !.
+country_of_origin(mitsubishi, japan) :- !.
+country_of_origin(mini, great_britain) :- !.
+country_of_origin(bmw, germany) :- !.
+country_of_origin(rolls-royce, great_britain) :- !.
+country_of_origin(daimler, germany) :- !.
+country_of_origin(Class, C) :- sub_class(Class, BigClass), country_of_origin(BigClass, C), !.
+country_of_origin(Car, C) :- instance_of(Car, Class), country_of_origin(Class, C), !.
 
 
 
