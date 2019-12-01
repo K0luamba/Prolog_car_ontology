@@ -339,3 +339,11 @@ get_attributes(C) :- get_attribute("спорткар", C), nl, get_attribute("представит
     get_attribute("мощность двигателя", C), nl, get_attribute("страна происхождения", C), nl,
     get_attribute("год начала", C).
 
+show_if_different(V1, V2, Attr, C1, C2) :- dif(V1, V2), get_attribute(Attr, C1), write(", "), get_attribute(Attr, C2), nl, !.
+show_if_different(_, _, _, _, _) :- !.
+
+show_diff_attr(C1, C2) :- body_type(C1, V1), body_type(C2, V2), show_if_different(V1, V2, "тип кузова", C1, C2),
+    number_of_doors(C1, V3), number_of_doors(C2, V4), show_if_different(V3, V4, "число дверей", C1, C2),
+    engine_power(C1, V5), engine_power(C2, V6), show_if_different(V5, V6, "мощность двигателя", C1, C2),
+    country_of_origin(C1, V7), country_of_origin(C2, V8), show_if_different(V7, V8, "страна происхождения", C1, C2),
+    year_of_beginning(C1, V9), year_of_beginning(C2, V10), show_if_different(V9, V10, "год начала", C1, C2), !.
