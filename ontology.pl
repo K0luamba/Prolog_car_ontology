@@ -1,8 +1,13 @@
+list_min([L|Ls], Min) :- list_min(Ls, L, Min).
+
+list_min([], Min, Min).
+list_min([L|Ls], Min0, Min) :- Min1 is min(L, Min0), list_min(Ls, Min1, Min).
+
 % определение классов=компаний
 sub_class(audi, volkswagen_group).
 sub_class(bentley, volkswagen_group).
 sub_class(lamborghini, volkswagen_group).
-sub_class(porshe, volkswagen_group).
+sub_class(porsche, volkswagen_group).
 sub_class(skoda, volkswagen_group).
 sub_class(maybach, daimler).
 sub_class(mercedes-benz, daimler).
@@ -15,42 +20,43 @@ sub_class(mini, bmw_group).
 sub_class(bmw, bmw_group).
 sub_class(rolls-royce, bmw_group).
 % определение экземпл€ров классов=моделей
-instance_of(r8, audi).
-instance_of(a8, audi).
-instance_of(q5, audi).
-instance_of(continental, bentley).
-instance_of(bentayga, bentley).
-instance_of(huracan, lamborghini).
-instance_of(aventador, lamborghini).
-instance_of(911, porshe).
-instance_of(cayenne, porshe).
-instance_of(panamera, porshe).
-instance_of(fabia, skoda).
-instance_of(yeti, skoda).
-instance_of(maybach_57, maybach).
-instance_of(maybach_62, maybach).
-instance_of(gelenvagen, mercedes-benz).
-instance_of(cla, mercedes-benz).
-instance_of(fortwo, smart).
-instance_of(smart_roadster, smart).
-instance_of(logan, renault).
-instance_of(fluence, renault).
-instance_of(latitude, renault).
-instance_of(xray, lada).
-instance_of(vesta, lada).
-instance_of(x-trail, nissan).
-instance_of(kicks, nissan).
-instance_of(pathfinder, nissan).
-instance_of(outlander, mitsubishi).
-instance_of(lancer, mitsubishi).
-instance_of(pajero, mitsubishi).
-instance_of(clubman, mini).
-instance_of(mini_roadster, mini).
-instance_of(paceman, mini).
-instance_of(i8, bmw).
-instance_of(x5, bmw).
-instance_of(ghost, rolls-royce).
-instance_of(wraith, rolls-royce).
+instance_of(r8, audi) :- !.
+instance_of(a8, audi) :- !.
+instance_of(q5, audi) :- !.
+instance_of(continental, bentley) :- !.
+instance_of(bentayga, bentley) :- !.
+instance_of(huracan, lamborghini) :- !.
+instance_of(aventador, lamborghini) :- !.
+instance_of(911, porsche) :- !.
+instance_of(cayenne, porsche) :- !.
+instance_of(panamera, porsche) :- !.
+instance_of(fabia, skoda) :- !.
+instance_of(yeti, skoda) :- !.
+instance_of(maybach_57, maybach) :- !.
+instance_of(maybach_62, maybach) :- !.
+instance_of(gelenvagen, mercedes-benz) :- !.
+instance_of(cla, mercedes-benz) :- !.
+instance_of(fortwo, smart) :- !.
+instance_of(smart_roadster, smart) :- !.
+instance_of(logan, renault) :- !.
+instance_of(fluence, renault) :- !.
+instance_of(latitude, renault) :- !.
+instance_of(xray, lada) :- !.
+instance_of(vesta, lada) :- !.
+instance_of(x-trail, nissan) :- !.
+instance_of(kicks, nissan) :- !.
+instance_of(pathfinder, nissan) :- !.
+instance_of(outlander, mitsubishi) :- !.
+instance_of(lancer, mitsubishi) :- !.
+instance_of(pajero, mitsubishi) :- !.
+instance_of(clubman, mini) :- !.
+instance_of(mini_roadster, mini) :- !.
+instance_of(paceman, mini) :- !.
+instance_of(i8, bmw) :- !.
+instance_of(x5, bmw) :- !.
+instance_of(ghost, rolls-royce) :- !.
+instance_of(wraith, rolls-royce) :- !.
+instance_of(Company, _) :- sub_class(Company, _), !, fail.
 % если считаем, что экземпл€р можно называть
 % представителем класса самого верхнего уровн€
 instance_of(Car, BigClass) :- instance_of(Car, Class), sub_class(Class, BigClass).
@@ -61,7 +67,7 @@ sports_car(r8).
 sports_car(lancer).
 sports_car(i8).
 sports_car(Car) :- instance_of(Car, lamborghini), !.
-sports_car(Car) :- instance_of(Car, porshe), !.
+sports_car(Car) :- instance_of(Car, porsche), !.
 
 % считать ли авто "класса люкс"
 % принцип наследовани€ - значение по умолчанию
@@ -212,7 +218,7 @@ engine_power(wraith, 624).
 country_of_origin(audi, germany) :- !.
 country_of_origin(bentley, great_britain) :- !.
 country_of_origin(lamborghini, italia) :- !.
-country_of_origin(porshe, germany) :- !.
+country_of_origin(porsche, germany) :- !.
 country_of_origin(skoda, czech_republic) :- !.
 country_of_origin(renault, france) :- !.
 country_of_origin(lada, russia) :- !.
@@ -225,12 +231,65 @@ country_of_origin(daimler, germany) :- !.
 country_of_origin(Class, C) :- sub_class(Class, BigClass), country_of_origin(BigClass, C), !.
 country_of_origin(Car, C) :- instance_of(Car, Class), country_of_origin(Class, C), !.
 
+% когда положено начало: дл€ авто - впервые представлен/старт продаж
+% дл€ компании - создание фирмы
+% дл€ концерна вычисл€ем, как год создани€ самой старой компании в нем
+year_of_beginning(r8, 2006).
+year_of_beginning(a8, 1994).
+year_of_beginning(q5, 2008).
+year_of_beginning(continental, 2002).
+year_of_beginning(bentayga, 2015).
+year_of_beginning(huracan, 2014).
+year_of_beginning(aventador, 2011).
+year_of_beginning(911, 1963).
+year_of_beginning(cayenne, 2002).
+year_of_beginning(panamera, 2009).
+year_of_beginning(fabia, 1999).
+year_of_beginning(yeti, 2009).
+year_of_beginning(maybach_57, 2002).
+year_of_beginning(maybach_62, 2002).
+year_of_beginning(gelenvagen, 1979).
+year_of_beginning(cla, 2013).
+year_of_beginning(fortwo, 1998).
+year_of_beginning(smart_roadster, 2002).
+year_of_beginning(logan, 2004).
+year_of_beginning(fluence, 2009).
+year_of_beginning(latitude, 2010).
+year_of_beginning(xray, 2015).
+year_of_beginning(vesta, 2015).
+year_of_beginning(x-trail, 2001).
+year_of_beginning(kicks, 2016).
+year_of_beginning(pathfinder, 1985).
+year_of_beginning(outlander, 2001).
+year_of_beginning(lancer, 1973).
+year_of_beginning(pajero, 1981).
+year_of_beginning(clubman, 2007).
+year_of_beginning(mini_roadster, 2011).
+year_of_beginning(paceman, 2012).
+year_of_beginning(i8, 2013).
+year_of_beginning(x5, 1999).
+year_of_beginning(ghost, 2009).
+year_of_beginning(wraith, 2013).
+year_of_beginning(audi, 1909).
+year_of_beginning(bentley, 1919).
+year_of_beginning(lamborghini, 1963).
+year_of_beginning(porsche, 1931).
+year_of_beginning(skoda, 1895).
+year_of_beginning(maybach, 1909).
+year_of_beginning(mercedes-benz, 1926).
+year_of_beginning(smart, 1994).
+year_of_beginning(renault, 1898).
+year_of_beginning(lada, 1966).
+year_of_beginning(nissan, 1933).
+year_of_beginning(mitsubishi, 1870).
+year_of_beginning(mini, 1958).
+year_of_beginning(bmw, 1916).
+year_of_beginning(rolls-royce, 1904).
+year_of_beginning(BigClass, X) :- findall(Class, sub_class(Class, BigClass), Classes),
+    maplist(year_of_beginning, Classes, Y), list_min(Y, X), !.
 
+show_bool(Bool) :- Bool, write("да"), !.
+show_bool(Bool) :- write("нет").
 
-
-
-
-
-
-
+% создаем "пользовательские" версии предикатов - они вывод€т строку
 
