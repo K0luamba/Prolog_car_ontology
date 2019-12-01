@@ -166,7 +166,7 @@ body_type(renault, sedan).
 body_type(Car, Type) :- instance_of(Car, Class), body_type(Class, Type).
 
 % число дверей в авто
-% вычисляется в хависимости от типа кузова (нет наследования)
+% вычисляется в зависимости от типа кузова (нет наследования)
 number_of_doors(Car, 2) :- body_type(Car, coupe), !.
 number_of_doors(Car, 2) :- body_type(Car, roadster), !.
 number_of_doors(Car, 4) :- body_type(Car, sedan), !.
@@ -214,7 +214,7 @@ engine_power(x5, 381).
 engine_power(ghost, 563).
 engine_power(wraith, 624).
 
-% страна производства
+% страна происхождения
 % наследование - от родителя (явно не указан ни для одной модели)
 country_of_origin(audi, germany) :- !.
 country_of_origin(bentley, great_britain) :- !.
@@ -289,14 +289,53 @@ year_of_beginning(rolls-royce, 1904).
 year_of_beginning(BigClass, X) :- findall(Class, sub_class(Class, BigClass), Classes),
     maplist(year_of_beginning, Classes, Y), list_min(Y, X), !.
 
+% "русификация" вывода программы
 show_bool(Bool) :- Bool, write("да"), !.
 show_bool(_) :- write("нет").
 
+show_body_type(sedan) :- write("седан"), !.
+show_body_type(station_wagon) :- write("универсал"), !.
+show_body_type(coupe) :- write("купе"), !.
+show_body_type(crossover) :- write("кроссовер"), !.
+show_body_type(suv) :- write("внедорожник"), !.
+show_body_type(hatchback) :- write("хэтчбек"), !.
+show_body_type(roadster) :- write("родстер"), !.
+show_body_type(limousine) :- write("лимузин"), !.
+show_body_type(_) :- write("неизвестный тип [ERROR]"), !.
+
+show_country(germany) :- write("Германия"), !.
+show_country(great_britain) :- write("Великобритания"), !.
+show_country(italia) :- write("Италия"), !.
+show_country(czech_republic) :- write("Чехия"), !.
+show_country(france) :- write("Франция"), !.
+show_country(germany) :- write("Германия"), !.
+show_country(russia) :- write("Россия"), !.
+show_country(japan) :- write("Япония"), !.
+show_country(germany) :- write("Германия"), !.
+
 % создаем "пользовательский" вывод предикатов - выводит строку
+% в конце всегда вернет успех
 get_attribute("спорткар", C) :- write("спорткар: "), show_bool(sports_car(C)).
 get_attribute("представительский класс", C) :- write("представительский класс: "), show_bool(executive_class(C)).
 get_attribute("семейное авто", C) :- write("семейное авто: "), show_bool(family_car(C)).
 get_attribute("двухместное авто", C) :- write("двухместное авто: "), show_bool(two_seats(C)).
 get_attribute("четырехместное авто", C) :- write("четырехместное авто: "), show_bool(four_seats(C)).
 get_attribute("пятиместное авто", C) :- write("пятиместное авто: "), show_bool(five_seats(C)).
+get_attribute("тип кузова", C) :- body_type(C, Type), write("тип кузова: "), show_body_type(Type), !.
+get_attribute("тип кузова", _) :- write("тип кузова: не определен").
+get_attribute("число дверей", C) :- number_of_doors(C, N), write("число дверей: "), write(N), !.
+get_attribute("число дверей", _) :- write("число дверей: не определено").
+get_attribute("мощность двигателя", C) :- engine_power(C, N), write("мощность двигателя: "), write(N), write(" л.c."), !.
+get_attribute("мощность двигателя", _) :- write("мощность двигателя: не определена").
+get_attribute("страна происхождения", C) :- country_of_origin(C, X), write("страна происхождения: "), show_country(X), !.
+get_attribute("страна происхождения", _) :- write("страна происхождения: не определена").
+get_attribute("год начала", C) :- year_of_beginning(C, N), write("год начала: "), write(N), write(" г."), !.
+get_attribute("год начала", _) :- write("год начала: не определен").
+
+get_attributes(C) :- get_attribute("спорткар", C), nl, get_attribute("представительский класс", C), nl,
+    get_attribute("семейное авто", C), nl, get_attribute("двухместное авто", C), nl,
+    get_attribute("четырехместное авто", C), nl, get_attribute("пятиместное авто", C), nl,
+    get_attribute("тип кузова", C), nl, get_attribute("число дверей", C), nl,
+    get_attribute("мощность двигателя", C), nl, get_attribute("страна происхождения", C), nl,
+    get_attribute("год начала", C).
 
