@@ -56,7 +56,9 @@ instance_of(i8, bmw) :- !.
 instance_of(x5, bmw) :- !.
 instance_of(ghost, rolls-royce) :- !.
 instance_of(wraith, rolls-royce) :- !.
+% избегаем лишней рекурсии
 instance_of(Company, _) :- sub_class(Company, _), !, fail.
+instance_of(Concern, _) :- sub_class(_, Concern), !, fail.
 % если считаем, что экземпляр можно называть
 % представителем класса самого верхнего уровня
 instance_of(Car, BigClass) :- instance_of(Car, Class), sub_class(Class, BigClass).
@@ -108,7 +110,6 @@ four_seats(paceman).
 four_seats(maybach).
 four_seats(rolls-royce).
 four_seats(Car) :- instance_of(Car, Class), four_seats(Class).
-
 
 % 5-местный автомобиль
 % принцип наследования - от родителя
@@ -289,7 +290,13 @@ year_of_beginning(BigClass, X) :- findall(Class, sub_class(Class, BigClass), Cla
     maplist(year_of_beginning, Classes, Y), list_min(Y, X), !.
 
 show_bool(Bool) :- Bool, write("да"), !.
-show_bool(Bool) :- write("нет").
+show_bool(_) :- write("нет").
 
-% создаем "пользовательские" версии предикатов - они выводят строку
+% создаем "пользовательский" вывод предикатов - выводит строку
+get_attribute("спорткар", C) :- write("спорткар: "), show_bool(sports_car(C)).
+get_attribute("представительский класс", C) :- write("представительский класс: "), show_bool(executive_class(C)).
+get_attribute("семейное авто", C) :- write("семейное авто: "), show_bool(family_car(C)).
+get_attribute("двухместное авто", C) :- write("двухместное авто: "), show_bool(two_seats(C)).
+get_attribute("четырехместное авто", C) :- write("четырехместное авто: "), show_bool(four_seats(C)).
+get_attribute("пятиместное авто", C) :- write("пятиместное авто: "), show_bool(five_seats(C)).
 
