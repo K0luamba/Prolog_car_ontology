@@ -164,6 +164,7 @@ body_type(wraith, coupe).
 body_type(lamborghini, coupe).
 body_type(renault, sedan).
 body_type(Car, Type) :- instance_of(Car, Class), body_type(Class, Type).
+body_type(_, unknown).
 
 % число дверей в авто
 % вычисляется в зависимости от типа кузова (нет наследования)
@@ -175,6 +176,7 @@ number_of_doors(Car, 5) :- body_type(Car, suv), !.
 number_of_doors(Car, 5) :- body_type(Car, crossover), !.
 number_of_doors(Car, 5) :- body_type(Car, hatchback), !.
 number_of_doors(Car, 5) :- body_type(Car, station_wagon), !.
+number_of_doors(_, unknown).
 
 % мощность автомобиля (л.с.)
 % нет наследования
@@ -213,6 +215,7 @@ engine_power(i8, 231).
 engine_power(x5, 381).
 engine_power(ghost, 563).
 engine_power(wraith, 624).
+engine_power(_, unknown).
 
 % страна происхождения
 % наследование - от родителя (явно не указан ни для одной модели)
@@ -231,6 +234,7 @@ country_of_origin(rolls-royce, great_britain) :- !.
 country_of_origin(daimler, germany) :- !.
 country_of_origin(Class, C) :- sub_class(Class, BigClass), country_of_origin(BigClass, C), !.
 country_of_origin(Car, C) :- instance_of(Car, Class), country_of_origin(Class, C), !.
+country_of_origin(_, unknown).
 
 % когда положено начало: для авто - впервые представлен/старт продаж
 % для компании - создание фирмы
@@ -288,10 +292,21 @@ year_of_beginning(bmw, 1916).
 year_of_beginning(rolls-royce, 1904).
 year_of_beginning(BigClass, X) :- findall(Class, sub_class(Class, BigClass), Classes),
     maplist(year_of_beginning, Classes, Y), list_min(Y, X), !.
+year_of_beginning(_, unknown).
+
+not_unknown(unknown) :- !, fail.
+not_unknown(_) :- !.
 
 % "русификация" вывода программы
 show_bool(Bool) :- Bool, write("да"), !.
 show_bool(_) :- write("нет").
+
+% решает проблемы отличимости типа:
+% "dif(family_car(yeti),family_car(fabia))"
+dif_bool(Bool1, Bool2) :- Bool1, Bool2, !, fail.
+dif_bool(Bool1, _) :- Bool1, !.
+dif_bool(_, Bool2) :- Bool2, !.
+dif_bool(_, _) :- !, fail.
 
 show_body_type(sedan) :- write("седан"), !.
 show_body_type(station_wagon) :- write("универсал"), !.
@@ -321,28 +336,39 @@ get_attribute("семейное авто", C) :- write("семейное авто: "), show_bool(family_
 get_attribute("двухместное авто", C) :- write("двухместное авто: "), show_bool(two_seats(C)).
 get_attribute("четырехместное авто", C) :- write("четырехместное авто: "), show_bool(four_seats(C)).
 get_attribute("пятиместное авто", C) :- write("пятиместное авто: "), show_bool(five_seats(C)).
-get_attribute("тип кузова", C) :- body_type(C, Type), write("тип кузова: "), show_body_type(Type), !.
-get_attribute("тип кузова", _) :- write("тип кузова: не определен").
-get_attribute("число дверей", C) :- number_of_doors(C, N), write("число дверей: "), write(N), !.
-get_attribute("число дверей", _) :- write("число дверей: не определено").
-get_attribute("мощность двигателя", C) :- engine_power(C, N), write("мощность двигателя: "), write(N), write(" л.c."), !.
-get_attribute("мощность двигателя", _) :- write("мощность двигателя: не определена").
-get_attribute("страна происхождения", C) :- country_of_origin(C, X), write("страна происхождения: "), show_country(X), !.
-get_attribute("страна происхождения", _) :- write("страна происхождения: не определена").
-get_attribute("год начала", C) :- year_of_beginning(C, N), write("год начала: "), write(N), write(" г."), !.
-get_attribute("год начала", _) :- write("год начала: не определен").
+get_attribute("тип кузова", C) :- body_type(C, Type), not_unknown(Type), write("тип кузова: "), show_body_type(Type), !.
+get_attribute("тип кузова", C) :- body_type(C, unknown), write("тип кузова: не определен").
+get_attribute("число дверей", C) :- number_of_doors(C, N), not_unknown(N), write("число дверей: "), write(N), !.
+get_attribute("число дверей", C) :- number_of_doors(C, unknown), write("число дверей: не определено").
+get_attribute("мощность двигателя", C) :- engine_power(C, N), not_unknown(N), write("мощность двигателя: "), write(N), write(" л.c."), !.
+get_attribute("мощность двигателя", C) :- engine_power(C, unknown), write("мощность двигателя: не определена").
+get_attribute("страна происхождения", C) :- country_of_origin(C, X), not_unknown(X), write("страна происхождения: "), show_country(X), !.
+get_attribute("страна происхождения", C) :- country_of_origin(C, unknown), write("страна происхождения: не определена").
+get_attribute("год начала", C) :- year_of_beginning(C, N), write("год начала: "), not_unknown(N), write(N), write(" г."), !.
+get_attribute("год начала", C) :- year_of_beginning(C, unknown), write("год начала: не определен").
 
 get_attributes(C) :- get_attribute("спорткар", C), nl, get_attribute("представительский класс", C), nl,
     get_attribute("семейное авто", C), nl, get_attribute("двухместное авто", C), nl,
     get_attribute("четырехместное авто", C), nl, get_attribute("пятиместное авто", C), nl,
     get_attribute("тип кузова", C), nl, get_attribute("число дверей", C), nl,
     get_attribute("мощность двигателя", C), nl, get_attribute("страна происхождения", C), nl,
-    get_attribute("год начала", C).
+    get_attribute("год начала", C), !.
 
 show_if_different(V1, V2, Attr, C1, C2) :- dif(V1, V2), get_attribute(Attr, C1), write(", "), get_attribute(Attr, C2), nl, !.
 show_if_different(_, _, _, _, _) :- !.
 
-show_diff_attr(C1, C2) :- body_type(C1, V1), body_type(C2, V2), show_if_different(V1, V2, "тип кузова", C1, C2),
+% аналогичный, но решает проблему подачи аргумента вида "attr(obj)"
+show_if_different2(V1, V2, Attr, C1, C2) :- dif_bool(V1, V2), get_attribute(Attr, C1), write(", "), get_attribute(Attr, C2), nl, !.
+show_if_different2(_, _, _, _, _) :- !.
+
+show_diff_attr(C1, C2) :-
+    show_if_different2(sports_car(C1), sports_car(C2), "спорткар", C1, C2),
+    show_if_different2(executive_class(C1), executive_class(C2), "представительский класс", C1, C2),
+    show_if_different2(family_car(C1), family_car(C2), "семейное авто", C1, C2),
+    show_if_different2(two_seats(C1), two_seats(C2), "двухместное авто", C1, C2),
+    show_if_different2(four_seats(C1), four_seats(C2), "четырехместное авто", C1, C2),
+    show_if_different2(five_seats(C1), five_seats(C2), "пятиместное авто", C1, C2),
+    body_type(C1, V1), body_type(C2, V2), show_if_different(V1, V2, "тип кузова", C1, C2),
     number_of_doors(C1, V3), number_of_doors(C2, V4), show_if_different(V3, V4, "число дверей", C1, C2),
     engine_power(C1, V5), engine_power(C2, V6), show_if_different(V5, V6, "мощность двигателя", C1, C2),
     country_of_origin(C1, V7), country_of_origin(C2, V8), show_if_different(V7, V8, "страна происхождения", C1, C2),
