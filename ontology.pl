@@ -346,6 +346,7 @@ get_attribute("страна происхождения", C) :- country_of_origin(C, X), not_unknown
 get_attribute("страна происхождения", C) :- country_of_origin(C, unknown), write("страна происхождения: не определена").
 get_attribute("год начала", C) :- year_of_beginning(C, N), write("год начала: "), not_unknown(N), write(N), write(" г."), !.
 get_attribute("год начала", C) :- year_of_beginning(C, unknown), write("год начала: не определен").
+get_attribute(_, _) :- write("Нет такого атрибута (возможно, Вы задали атрибут без кавычек).").
 
 get_attributes(C) :- get_attribute("спорткар", C), nl, get_attribute("представительский класс", C), nl,
     get_attribute("семейное авто", C), nl, get_attribute("двухместное авто", C), nl,
@@ -373,3 +374,18 @@ show_diff_attr(C1, C2) :-
     engine_power(C1, V5), engine_power(C2, V6), show_if_different(V5, V6, "мощность двигателя", C1, C2),
     country_of_origin(C1, V7), country_of_origin(C2, V8), show_if_different(V7, V8, "страна происхождения", C1, C2),
     year_of_beginning(C1, V9), year_of_beginning(C2, V10), show_if_different(V9, V10, "год начала", C1, C2), !.
+
+% реализация формата пользовательского ввода
+start :- write("Выберите действие из следующих: \"Вывод атрибута\", \"Вывод всех атрибутов\", \"Вывод отличий\""), nl, read(X), process_action(X).
+
+process_action("Вывод атрибута") :- write("Для какого объекта вывести атрибут?"), nl, read(C),
+    write("Какой атрибут вывести? (\"спорткар\",\"представительский класс\",\"семейное авто\",\"двухместное авто\",\"четырехместное авто\",\"пятиместное авто\",\"тип кузова\",\"число дверей\",\"мощность двигателя\",\"страна происхождения\",\"год начала\")"), nl, read(A), get_attribute(A, C).
+
+process_action("Вывод всех атрибутов") :- write("Для какого объекта вывести атрибуты?"), nl, read(C), get_attributes(C).
+
+process_action("Вывод отличий") :- write("Какой первый объект хотите сравнить?"), nl, read(C1), write("С каким объектои хотите сравнить?"), nl, read(C2), show_diff_attr(C1, C2).
+
+process_action("Отмена") :- !.
+
+process_action(_) :- write("Нет такого действия (возможно, Вы ввели действие без кавычек)."), nl,
+    write("Введите действие еще раз или введите \"Отмена\":"), nl, read(S), process_action(S).
